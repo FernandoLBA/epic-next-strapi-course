@@ -1,29 +1,29 @@
-import Image from "next/image";
+import { FeatureSection } from "@/components/custom/FeaturesSection";
+import { HeroSection } from "@/components/custom/HeroSection";
+import { getHomePageData } from "@/data/loaders";
 
-import { Button } from "@/components/ui/button";
-
-async function getStrapiData(path: string) {
-  const baseUrl = "http://localhost:1337";
-
-  try {
-    const response = await fetch(baseUrl + path);
-    const data = await response.json();
-
-    return data;
-  } catch (error) {
-    console.log(error);
+// * Devuelve el componente según el block que reciba
+function blockRenderer(block: any) {
+  switch (block.__component) {
+    case "layout.hero-section":
+      return <HeroSection key={block.id} data={block} />;
+    case "layout.features-section":
+      return <FeatureSection key={block.id} data={block} />;
+    default:
+      return null;
   }
 }
 
 export default async function Home() {
-  const strapiData = await getStrapiData("/api/home-page");
+  const strapiData = await getHomePageData();
+  const { blocks } = strapiData;
 
-  const { title, description } = strapiData.data.attributes;
+  if (!blocks) return <div>No blocks found</div>
 
   return (
     <main className="container mx-auto py-6">
-      <h1 className="text-5xl font-bold">{title}</h1>
-      <p className="text-xl mt-4">{description}</p>
+      {/* Muestra los componentes según el orden en que lleguen de strapi */}
+      {blocks.map((block: any) => blockRenderer(block))}
     </main>
   );
 }
