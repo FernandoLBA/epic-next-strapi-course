@@ -21,7 +21,7 @@ export default async function Home() {
   if (!blocks) return <div>No blocks found</div>
 
   return (
-    <main className="container mx-auto py-6">
+    <main>
       {/* Muestra los componentes según el orden en que lleguen de strapi */}
       {blocks.map((block: any) => blockRenderer(block))}
     </main>
