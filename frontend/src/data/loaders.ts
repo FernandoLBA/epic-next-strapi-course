@@ -1,3 +1,4 @@
+// * Librería para crear queries para strapi a través de objetos
 import qs from "qs";
 import { unstable_noStore as noStore } from "next/cache";
 
@@ -12,8 +13,8 @@ const baseUrl = getStrapiURL();
  * @returns 
  */
 async function fetchData(url: string) {
-    // ? esta función se usa para que la data no se cachee nunca
-    // noStore();
+    // ? esta función se usa para que la data no se cachee nunca en el navegador
+    noStore();
 
     const authToken = null; // we will implement this later getAuthToken() later
     const headers = {
@@ -72,8 +73,8 @@ export async function getHomePageData() {
  * @returns 
  */
 export async function getGlobalPageData() {
-    // * Si queremos que la data sea dinámica y no se cachee solo de esta data, usamos noStore aquí:
-    noStore();
+    // * Si queremos que solo esta data sea dinámica y no se cachee usamos noStore aquí:
+    // noStore();
 
     const url = new URL("/api/global", baseUrl);
 

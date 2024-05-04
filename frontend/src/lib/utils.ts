@@ -1,6 +1,13 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
+/**
+ * Esta función recibe una o varias clases de tailwind
+ * y las junta con las existentes y las retorna
+ * Sirve para inyectar nuevas clases a elementos html o componentes que ya tienen otras clases.
+ * @param inputs 
+ * @returns 
+ */
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
