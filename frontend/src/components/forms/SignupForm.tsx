@@ -19,11 +19,15 @@ import { StrapiErrors } from "../custom/StrapiErrors";
 import { SubmitButton } from "../custom/SubmitButton";
 import { ZodErrors } from "../custom/ZodErrors";
 
-// * Estado incial del formulario
+// * Estado incial
 const INITIAL_STATE = {
+    // * Data del form
     data: null,
+    // * Errores de validación del zod
     zodErrors: null,
+    // * Errores de strapi
     strapiErrors: null,
+    // * Mensaje
     message: null,
 }
 
