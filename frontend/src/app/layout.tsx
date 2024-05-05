@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import "./globals.css";
-import { getGlobalMetadata, getGlobalPageData } from "@/data/loaders";
-import { Header } from "@/components/custom/Header";
 import { Footer } from "@/components/custom/Footer";
+import { Header } from "@/components/custom/Header";
+import { getGlobalMetadata, getGlobalPageData } from "@/data/loaders";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,9 +29,11 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Header data={globalData.header} />
+
         <div>
           {children}
         </div>
+        
         <Footer data={globalData.footer} />
       </body>
     </html>
