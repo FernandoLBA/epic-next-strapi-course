@@ -6,14 +6,19 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,css,yaml,yml}\"",
+    "check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,mdx,css,yaml,yml}\"",
+    "prepare": "husky"
   },
   "dependencies": {
+    "@langchain/openai": "^0.0.28",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@types/qs": "^6.9.15",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "langchain": "^0.1.36",
     "lucide-react": "^0.377.0",
     "next": "14.2.3",
     "next-themes": "^0.3.0",
@@ -30,7 +35,9 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "husky": "^9.0.11",
     "postcss": "^8",
+    "prettier": "^3.2.5",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }
