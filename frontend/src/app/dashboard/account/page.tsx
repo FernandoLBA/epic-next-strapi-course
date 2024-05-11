@@ -1,5 +1,10 @@
+import dynamic from "next/dynamic";
+
+// * Con esta importación removemos el error de hydration de next
+const ProfileForm = dynamic(() => import("@/components/forms/ProfileForm"), {
+  ssr: false,
+});
 import { getUserMeLoader } from "@/data/services/get-user-me-loader";
-import { ProfileForm } from "@/components/forms/ProfileForm";
 import { ProfileImageForm } from "@/components/forms/ProfileImageForm";
 
 export default async function AccountRoute() {

@@ -35,7 +35,7 @@ function CountBox({ text }: { readonly text: number }) {
     );
 }
 
-export function ProfileForm({
+export default function ProfileForm({
     data,
     className,
 }: {
