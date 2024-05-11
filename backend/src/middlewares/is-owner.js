@@ -14,7 +14,6 @@ module.exports = (config, { strapi }) => {
   return async (ctx, next) => {
     // Extrae el id del elemento (por ejemplo del summary) de los params
     const entryId = ctx.params.id;
-    console.log("🚀 ~ return ~ entryId:", entryId)
     // Extrae el user
     const user = ctx.state.user;
     // Extrae el userId
@@ -51,6 +50,7 @@ module.exports = (config, { strapi }) => {
     if (!entryId) {
       ctx.query = {
         ...ctx.query,
+        // forzamos a que el filter solo traiga la data del usuario logueado
         filters: { ...ctx.query.filters, user: userId },
       };
     }
