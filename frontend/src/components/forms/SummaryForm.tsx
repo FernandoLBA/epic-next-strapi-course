@@ -5,6 +5,7 @@ import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/custom/SubmitButton";
 import { Input } from "@/components/ui/input";
+import { createSummaryAction } from "@/data/actions/summary-actions";
 import { generateSummaryService } from "@/data/services/summary-service";
 import { cn, extractYouTubeID } from "@/lib/utils";
 
@@ -75,15 +76,45 @@ export function SummaryForm() {
       return;
     }
 
+    console.log("Debería armar el payload");
+
+    // * Se arma el payload que se usará para guardar el summary en strapi
+    const payload = {
+      data: {
+        title: `Summary for video: ${processedVideoId}`,
+        videoId: processedVideoId,
+        summary: summaryReponseData.data,
+      },
+    };
+
+    try {
+      // * Se envía el payload para que se guarde en strapi
+      await createSummaryAction(payload);
+    } catch (error) {
+      toast.error("Error creating summary");
+      console.log("Failed to create summary");
+
+      setError({
+        ...INITIAL_STATE,
+        message: "Failed to create summary",
+        name: "Summary Error",
+      });
+
+      setLoading(false);
+      return;
+    }
+
     toast.success("Summary Created");
     setLoading(false);
   }
 
+  // * Limpia los errores
   function clearError() {
     setError(INITIAL_STATE);
     if (error.message) setValue("");
   }
 
+  // * Estilos para los errores
   const errorStyles = error.message
     ? "outline-1 outline outline-red-500 placeholder:text-red-700"
     : "";
