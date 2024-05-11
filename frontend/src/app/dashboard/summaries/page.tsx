@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { getSummaries } from "@/data/loaders";
+import Link from "next/link";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -20,7 +20,8 @@ function LinkCard({ id, title, summary }: Readonly<LinkCardProps>) {
         </CardHeader>
         <CardContent>
           <p className="w-full mb-4 leading-7">
-            {summary.slice(0, 164) + " [read more]"}
+            {summary.slice(0, 164)}
+            <span className="text-pink-500"> [read more]</span>
           </p>
         </CardContent>
       </Card>
