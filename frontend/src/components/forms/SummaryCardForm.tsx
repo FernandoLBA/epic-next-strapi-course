@@ -1,9 +1,13 @@
-// import { updateSummaryAction, deleteSummaryAction } from "@/data/actions/summary-actions";
+"use client";
 
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
+import {
+  deleteSummaryAction,
+  updateSummaryAction,
+} from "@/data/actions/summary-actions";
+import { useFormState } from "react-dom";
 
+import { DeleteButton } from "@/components/custom/DeleteButton";
+import { SubmitButton } from "@/components/custom/SubmitButton";
 import {
   Card,
   CardContent,
@@ -11,9 +15,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
+import { StrapiErrors } from "../custom/StrapiErrors";
 
-import { SubmitButton } from "@/components/custom/SubmitButton";
-import { DeleteButton } from "@/components/custom/DeleteButton";
+const INITIAL_STATE = {
+  strapiErrors: null,
+  data: null,
+  message: null,
+};
 
 export function SummaryCardForm({
   item,
@@ -22,16 +33,30 @@ export function SummaryCardForm({
   readonly item: any;
   readonly className?: string;
 }) {
-  // const deleteSummaryById = deleteSummaryAction.bind(null, item.id);
+  // * Se enlaza el item.id a los argumentos de la función deleteSummaryAction
+  const deleteSummaryById = deleteSummaryAction.bind(null, item.id);
+
+  // * Controla el botón de eliminar
+  const [deleteState, deleteAction] = useFormState(
+    deleteSummaryById,
+    INITIAL_STATE
+  );
+
+  // * Controla el botón de actualziar
+  const [updateState, updateAction] = useFormState(
+    updateSummaryAction,
+    INITIAL_STATE
+  );
 
   return (
     <Card className={cn("mb-8 relative h-auto", className)}>
       <CardHeader>
         <CardTitle>Video Summary</CardTitle>
       </CardHeader>
+
       <CardContent>
         <div>
-          <form>
+          <form action={updateAction}>
             <Input
               id="title"
               name="title"
@@ -40,23 +65,32 @@ export function SummaryCardForm({
               className="mb-4"
               defaultValue={item.title}
             />
+
             <Textarea
               name="summary"
               className="flex w-full rounded-md bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:bg-gray-50 focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 mb-4 h-[calc(100vh-245px)] "
               defaultValue={item.summary}
             />
+
             <input type="hidden" name="id" value={item.id} />
+
             <SubmitButton
               text="Update Summary"
               loadingText="Updating Summary"
             />
           </form>
-          <form>
+
+          <form action={deleteAction}>
             <DeleteButton className="absolute right-4 top-4 bg-red-700 hover:bg-red-600" />
           </form>
         </div>
       </CardContent>
-      <CardFooter></CardFooter>
+
+      <CardFooter>
+        <StrapiErrors
+          error={deleteState?.strapiErrors || updateState?.strapiErrors}
+        />
+      </CardFooter>
     </Card>
   );
 }
