@@ -33,6 +33,8 @@ export async function createSummaryAction(payload: Payload) {
   // * Aplana o normaliza la data de strapi
   const flattenedData = flattenAttributes(data);
 
+  if (flattenedData.error) throw new Error(flattenedData.error.message);
+
   // * Redirecciona a una pagína con el id del summary como param
   redirect("/dashboard/summaries/" + flattenedData.id);
 }

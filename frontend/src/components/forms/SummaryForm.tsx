@@ -76,8 +76,6 @@ export function SummaryForm() {
       return;
     }
 
-    console.log("Debería armar el payload");
-
     // * Se arma el payload que se usará para guardar el summary en strapi
     const payload = {
       data: {

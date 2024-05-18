@@ -32,6 +32,7 @@ function transformData(data: any[]) {
   };
 }
 
+// Plantilla del tipo de respuesta que queremos que OpenAI devuelva en el summary
 const TEMPLATE = `
 INSTRUCTIONS: 
   For the this {text} complete the following steps.
@@ -48,7 +49,8 @@ INSTRUCTIONS:
 `;
 
 /**
- *
+ * Esta función recibe el contenido y el template tipo string
+ * y los envía a OpenAI para generar un resumen
  * @param content
  * @param template
  */
@@ -63,7 +65,7 @@ async function generateSummary(content: string, template: string) {
       : 0.7,
     maxTokens: process.env.OPENAI_MAX_TOKENS
       ? parseInt(process.env.OPENAI_MAX_TOKENS)
-      : 4000,
+      : 7,
   });
 
   const outputParser = new StringOutputParser();
@@ -71,6 +73,8 @@ async function generateSummary(content: string, template: string) {
 
   try {
     const summary = await chain.invoke({ text: content });
+    console.log("🚀 ~ generateSummary ~ content:", content)
+    console.log("🚀 ~ generateSummary ~ summary:", summary)
 
     return summary;
   } catch (error) {
@@ -130,6 +134,7 @@ export async function POST(req: NextRequest) {
 
     // * Transforma la data, recibiendo la data como está y una propiedad text con toda la transcripción junta
     const transformedData = transformData(transcript);
+    console.log("🚀 ~ POST ~ transformedData:", transformedData)
 
     let summary: Awaited<ReturnType<typeof generateSummary>>;
 
