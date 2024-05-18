@@ -111,18 +111,43 @@ export async function getGlobalMetadata() {
 
 /**
  * Esta función obtiene los summaries de strapi
+ * Recibe un string con el query, para realizar
+ * un filtrado ordenado por la fecha createdAt.
+ * Y un currentPage de tipo number para el paginado
+ * @param queryString
+ * @param currentPage
  * @returns
  */
-export async function getSummaries() {
+export async function getSummaries(queryString: string, currentPage: number) {
+  const PAGE_SIZE = 4;
+  const query = qs.stringify({
+    // Ordena por la fecha createdAt de forma descendente
+    sort: ["createdAt:desc"],
+    filters: {
+      // O filtra por title o summary que contengan la query (i es no case sensitive)
+      $or: [
+        { title: { $containsi: queryString } },
+        { summary: { $containsi: queryString } },
+      ],
+    },
+    // Enviamos la page y la cantidad de registros por página
+    pagination: {
+      pageSize: PAGE_SIZE,
+      page: currentPage,
+    },
+  });
+
   const url = new URL("/api/summaries", baseUrl);
+  url.search = query;
+
   return fetchData(url.href);
 }
 
 /**
  * Esta función recibe el id del summary y
  * retorna un summary por su id.
- * @param summaryId 
- * @returns 
+ * @param summaryId
+ * @returns
  */
 export async function getSummaryById(summaryId: string) {
   return fetchData(`${baseUrl}/api/summaries/${summaryId}`);
